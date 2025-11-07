@@ -3,6 +3,8 @@ package com.example.todoapplication;
 import java.time.LocalDate;
 
 public class Item {
+
+    private int id;
     private String title;
     private String content;
     private LocalDate update;
@@ -28,6 +30,13 @@ public class Item {
 
     public LocalDate getUpdate() {
         return update;
+    }
+
+    public void setId(int id){
+        this.id=id;
+    }
+    public int getId(){
+        return this.id;
     }
     public void setUpdate(LocalDate update){
         this.update=update;

@@ -46,4 +46,6 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation("com.google.android.exoplayer:extension-okhttp:2.19.1")
     implementation("com.google.code.gson:gson:2.13.2")
+    implementation("androidx.room:room-runtime:2.8.3")
+    annotationProcessor("androidx.room:room-compiler:2.8.3")
 }

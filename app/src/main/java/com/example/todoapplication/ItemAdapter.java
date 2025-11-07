@@ -8,8 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 
-import com.example.todoapplication.databinding.ActivityMainBinding;
-
 import java.util.List;
 
 public class ItemAdapter extends BaseAdapter {
@@ -27,12 +25,12 @@ public class ItemAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return list.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return list.get(position).getId();
     }
 
     @Override
@@ -56,10 +54,12 @@ public class ItemAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void remove(int position){
-        list.remove(position);
+    public Item remove(int position){
+         Item item=list.remove(position);
         notifyDataSetChanged();
+        return item;
     }
+
 
     static class ViewHolder{
         public TextView title,content,update;
