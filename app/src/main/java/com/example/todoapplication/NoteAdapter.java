@@ -8,13 +8,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
-public class ItemAdapter extends BaseAdapter {
-    private List<Item> list;
+public class NoteAdapter extends BaseAdapter {
+    private List<Note> list;
     private Context context;
 
-    public ItemAdapter(List<Item> list,Context context){
+    public NoteAdapter(List<Note> list, Context context){
         this.list=list;
         this.context=context;
     }
@@ -30,7 +31,7 @@ public class ItemAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return list.get(position).getId();
+        return list.get(position).id;
     }
 
     @Override
@@ -41,27 +42,31 @@ public class ItemAdapter extends BaseAdapter {
             viewHolder=new ViewHolder();
             convertView.setTag(viewHolder);
             viewHolder.title=convertView.findViewById(R.id.title);
-            viewHolder.content=convertView.findViewById(R.id.content);
+            viewHolder.summary=convertView.findViewById(R.id.content);
             viewHolder.update=convertView.findViewById(R.id.update);
         }else{
             viewHolder=(ViewHolder) convertView.getTag();
         }
-        Item item=list.get(position);
-        viewHolder.title.setText(item.getTitle());
-        viewHolder.content.setText(item.getContent());
-        viewHolder.update.setText(item.getUpdate().toString());
+        Note item=list.get(position);
+        viewHolder.title.setText(item.title);
+        viewHolder.summary.setText(item.summary);
+        viewHolder.update.setText(item.update);
 
         return convertView;
     }
 
-    public Item remove(int position){
-         Item item=list.remove(position);
+    public Note remove(int position){
+        Note item=list.remove(position);
         notifyDataSetChanged();
         return item;
     }
 
+    public void update(List<Note> notes){
+        list=notes;
+        notifyDataSetChanged();
+    }
 
     static class ViewHolder{
-        public TextView title,content,update;
+        public TextView title,summary,update;
     }
 }

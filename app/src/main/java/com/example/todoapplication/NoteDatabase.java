@@ -9,17 +9,17 @@ import androidx.room.RoomDatabase;
 import com.example.todoapplication.Interface.NoteDao;
 
 @Database(entities = {Note.class},version = 1,exportSchema = false)
-public abstract class AppDatabase extends RoomDatabase {
+public abstract class NoteDatabase extends RoomDatabase {
     public abstract NoteDao noteDao();
 
-    private static volatile AppDatabase INSTANCE;
+    private static volatile NoteDatabase INSTANCE;
 
-    public static AppDatabase getDataBase(final Context context){
+    public static NoteDatabase getDataBase(final Context context){
         if(INSTANCE==null){
-            synchronized (AppDatabase.class){
+            synchronized (NoteDatabase.class){
                 if(INSTANCE==null){
                     INSTANCE= Room.databaseBuilder(context.getApplicationContext(),
-                            AppDatabase.class,"note-database")
+                            NoteDatabase.class,"note-database")
                             .build();
                 }
             }

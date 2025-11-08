@@ -2,7 +2,6 @@ package com.example.todoapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -10,17 +9,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.example.todoapplication.Interface.NoteDao;
 import com.example.todoapplication.databinding.ActivityNoteBinding;
 
 import java.time.LocalDate;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 public class NoteActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityNoteBinding binding;
-    private NoteDao noteDao;
+    private NoteViewModel noteViewModel;
+    private ThreadPoolExecutor executor;
+    private Note note;
     @Override
     protected void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
@@ -32,41 +35,46 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        binding.imageView.setOnClickListener(this);
-        noteDao=AppDatabase.getDataBase(this).noteDao();
         init();
     }
-
     @Override
     protected void onPause(){
         super.onPause();
         save();
     }
-
     private void save(){
-        Log.e("tag","to save--------------------");
-        String string = binding.content.getText().toString();
-        int n= Math.min(string.length(), 20);
-        String summary=string.substring(0,n);
-        Note note=new Note(binding.title.getText().toString(),summary,binding.time.getText().toString());
-        new Thread(()->{
-            long id = noteDao.insert(note);
-            Note t = noteDao.getNoteBYId((int) id);
-            if(t==null){
-                Log.e("tag","fail to save");
-            }
-            Log.e("tag","successed to save");
-        }).start();
-        //todo save content to FileStorage
+        String context = binding.content.getText().toString();
+        String title = binding.title.getText().toString();
+        if(context.isEmpty()||title.isEmpty()){
+            return;
+        }
+        String summary=context;
+        String update=LocalDate.now().toString();
+        Note curNote=new Note(title,summary,update);
+        if(note.id==0){
+            executor.execute(()->{
+                noteViewModel.insert(curNote);
+            });
+        }else{
+            curNote.id=note.id;
+            executor.execute(()->{
+                noteViewModel.update(curNote);
+            });
+        }
     }
     private void init(){
+        int n=Runtime.getRuntime().availableProcessors();
+        executor=new ThreadPoolExecutor(n,2*n,3, TimeUnit.SECONDS,new LinkedBlockingQueue<>(10));
+        binding.imageView.setOnClickListener(this);
+        noteViewModel=new ViewModelProvider(this).get(NoteViewModel.class);
         Intent intent = getIntent();
         int id = intent.getIntExtra("id",-1);
         if(id==-1){
+            note=new Note();
             binding.time.setText(LocalDate.now().toString());
             return;
         }
-        Note note= noteDao.getNoteBYId(id);
+        note=noteViewModel.get(id);
         if(note==null) {
             binding.time.setText(LocalDate.now().toString());
             return;
@@ -77,7 +85,9 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
         if(!note.update.isEmpty()){
             binding.time.setText(note.update);
         }
-        //todo get content from FileStorage
+        if(!note.summary.isEmpty()){
+            binding.content.setText(note.summary);
+        }
     }
 
     @Override

@@ -24,8 +24,8 @@ public interface NoteDao {
     int delete(Note note);
 
     @Query("select * from note")
-    List<Note> list();
+    LiveData<List<Note>> list();
 
     @Query("select * from note where id = :noteId")
-    Note getNoteBYId(int noteId);
+    Note getNoteById(int noteId);
 }

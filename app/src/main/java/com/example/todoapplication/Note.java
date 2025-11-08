@@ -23,5 +23,7 @@ public class Note {
         this.update=update;
         this.summary=summary;
     }
+    public Note(){
 
+    }
 }
