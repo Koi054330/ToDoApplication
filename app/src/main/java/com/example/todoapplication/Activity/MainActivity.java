@@ -1,4 +1,4 @@
-package com.example.todoapplication;
+package com.example.todoapplication.Activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,6 +15,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.todoapplication.Note;
+import com.example.todoapplication.NoteAdapter;
+import com.example.todoapplication.ViewModel.NoteViewModel;
 import com.example.todoapplication.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
@@ -62,7 +65,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         activityMainBinding.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,NoteActivity.class);
+                Intent intent=new Intent(MainActivity.this, NoteActivity.class);
+                startActivity(intent);
+            }
+        });
+        activityMainBinding.setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this, SettingActivity.class);
                 startActivity(intent);
             }
         });

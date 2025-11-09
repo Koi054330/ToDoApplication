@@ -1,9 +1,12 @@
-package com.example.todoapplication;
+package com.example.todoapplication.ViewModel;
 
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.example.todoapplication.Note;
+import com.example.todoapplication.NoteRepository;
 
 import java.util.List;
 

@@ -3,4 +3,10 @@
     <string name="note">笔记</string>
     <string name="title">标题\n</string>
     <string name="tips">开始书写</string>
+    <string name="login">登录</string>
+    <string name="setting">设置</string>
+    <string name="sync">云同步</string>
+    <string name="inputname">输入用户名</string>
+    <string name="inputpassword">输入密码</string>
+    <string name="register">没有账号？</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.todoapplication;
+package com.example.todoapplication.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.todoapplication.Note;
+import com.example.todoapplication.ViewModel.NoteViewModel;
 import com.example.todoapplication.databinding.ActivityNoteBinding;
 
 import java.time.LocalDate;
@@ -65,7 +67,7 @@ public class NoteActivity extends AppCompatActivity implements View.OnClickListe
     private void init(){
         int n=Runtime.getRuntime().availableProcessors();
         executor=new ThreadPoolExecutor(n,2*n,3, TimeUnit.SECONDS,new LinkedBlockingQueue<>(10));
-        binding.imageView.setOnClickListener(this);
+        binding.exit.setOnClickListener(this);
         noteViewModel=new ViewModelProvider(this).get(NoteViewModel.class);
         Intent intent = getIntent();
         int id = intent.getIntExtra("id",-1);
